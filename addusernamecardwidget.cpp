@@ -1,6 +1,6 @@
 #include "addusernamecardwidget.h"
-#include "ui_addusernamecardwidget.h"
 #include "UserFriendRequest.hpp"
+#include "ui_addusernamecardwidget.h"
 
 AddUserNameCardWidget::AddUserNameCardWidget(QWidget *parent)
     : QFrame(parent), ui(new Ui::AddUserNameCardWidget) {
@@ -15,7 +15,8 @@ AddUserNameCardWidget::AddUserNameCardWidget(QWidget *parent)
 
 AddUserNameCardWidget::~AddUserNameCardWidget() { delete ui; }
 
-void AddUserNameCardWidget::setNameCardInfo(std::shared_ptr<UserFriendRequest> info) {
+void AddUserNameCardWidget::setNameCardInfo(
+    std::shared_ptr<UserFriendRequest> info) {
   /*move ownership*/
   m_info = std::move(info);
 
@@ -46,7 +47,7 @@ void AddUserNameCardWidget::registerSignal() {
     ui->add_button->hide();
     ui->ignore_button->hide();
     ui->status_label->setText(QString("Added"));
-    emit signal_add_friend();
+    emit signal_add_friend(m_info);
   });
 
   connect(ui->ignore_button, &QPushButton::clicked, this, [this]() {

@@ -11,10 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
 
   switchingToLoginDialog();
-
-  // Just For Testing
-  // emit TCPNetworkConnection::get_instance() ->
-  // signal_switch_chatting_dialog();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -75,6 +71,10 @@ void MainWindow::switchingToResetDialog() {
 
 void MainWindow::swithcingToChattingInf() {
   m_chattingMainFrame = new ChattingDlgMainFrame(this);
+
+  /*when service disconnected, then goes back to login dialog*/
+  connect(m_chattingMainFrame, &ChattingDlgMainFrame::signal_log_out, this,
+       &MainWindow::switchingToLoginDialog);
 
   setFixedSize(m_chattingMainFrame->maximumSize());
 

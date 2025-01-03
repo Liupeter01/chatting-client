@@ -7,8 +7,8 @@ ChattingContactItem::ChattingContactItem(QWidget *parent)
       ui(new Ui::ChattingContactItem) {
   ui->setupUi(this);
 
-  /*set list item type, default value = ContactHistory*/
-  setItemType(ListItemType::ContactHistory);
+  /*set list item type, default value = MyContact*/
+  setItemType(ListItemType::MyContact);
 
   /*load qimage for AddUserWidget*/
   Tools::loadImgResources({"add_friend_clicked.png"},
@@ -45,16 +45,19 @@ void ChattingContactItem::setAddUserWidget() {
   m_size = ui->contact_zone->size();
 }
 
-void ChattingContactItem::setChattingContact(const QString &target_picture,
-                                             const QString &text) {
+void ChattingContactItem::setChattingContact(
+    std::shared_ptr<UserNameCard> info) {
   /*set list item type, ContactHistory*/
-  setItemType(ListItemType::ContactHistory);
+  setItemType(ListItemType::MyContact);
+
+  /*record user's info*/
+  m_userinfo = info;
 
   /*setup avator by static label*/
-  Tools::setQLableImage(ui->notification_label, target_picture, "/static/");
+  Tools::setQLableImage(ui->notification_label, info->m_avatorPath, "/static/");
 
   /*setup text by static text*/
-  ui->display_label->setText(text);
+  ui->display_label->setText(info->m_nickname);
 
   /*move notification_label to front*/
   ui->notification_label->raise();
@@ -65,6 +68,10 @@ void ChattingContactItem::setChattingContact(const QString &target_picture,
 
   /*update contact zone's size*/
   m_size = ui->contact_zone->size();
+}
+
+std::shared_ptr<UserNameCard> ChattingContactItem::getChattingContact(){
+    return m_userinfo;
 }
 
 void ChattingContactItem::setGroupSeperator(const QString &text) {
